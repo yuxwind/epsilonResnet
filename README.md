@@ -70,7 +70,7 @@ git clone https://github.com/yuxwind/epsilon-resnet.git
 Please cite &epsilon;-ResNet in your publication if it helps your research:
 
 ```
-@article{DBLP:journals/corr/abs-1804-01661,
+@article{DBLP:yu2018EpsilonResNet,
   author    = {Xin Yu and Zhiding Yu and Srikumar Ramalingam},
   title     = {Learning Strict Identity Mappings in Deep Residual Networks},
   journal   = {CoRR},
