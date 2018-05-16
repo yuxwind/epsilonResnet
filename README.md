@@ -1,4 +1,4 @@
-# $\epsilon$-ResNet
+# \alpha-ResNet
 
 ## imagenet-epsilon-resnet.py
 This is the training code of [epsilon ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. 
