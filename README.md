@@ -25,10 +25,6 @@ This is the training code of [epsilon-ResNet](https://arxiv.org/abs/1804.01661) 
 
 ![imagenet-error](figures/imagenet-val-error.png)
 
-[comment]: <> (The two epsilon values give out the compression error:)
-
-[//]: # (![imagenet-compression](figures/ImageNet-str_ratio.png))
-
 Usage:
 
 ```
