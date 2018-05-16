@@ -1,5 +1,5 @@
-# epsilon-ResNet
-[epsilon-ResNet](https://arxiv.org/abs/1804.01661) is a variant of ResNet to automatically discard redundant layers, which produces responses that are smaller than a threshold epsilon, with a marginal or no loss in performance.
+# &epsilon;-ResNet
+[&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) is a variant of ResNet to automatically discard redundant layers, which produces responses that are smaller than a threshold &epsilon;, with a marginal or no loss in performance.
 
 ## Implementation
 Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet) of [tensorpack](https://github.com/ppwwyyxx/tensorpack). The idea is simple. We only add a few functions and make necessary changes on the original [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet). Hightlights include:
@@ -20,9 +20,8 @@ Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/t
 	+ In get_config(), a InferenceRunner() instance is added for side supervision; a LearningRateSetter() instance is added for adaptive learning rate.
 	+ The variable discarded_cnt is to count the number of discarded layers.
 	
-
 ## imagenet-epsilon-resnet.py
-This is the training code of [epsilon-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and epsilon-ResNet of 101 layers are as below. Two epsilon values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
+This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
 
 <img src="figures/imagenet-val-error.png" class="center" width="450" height="300"/>
 
@@ -34,7 +33,7 @@ python imagenet-epsilon-resnet.py -d 101 -e 2.0 --gpu 4 --data {path_to_ilsvrc12
 
 
 ## cifar10-epsilon-resnet.py
-It is to train our model on cifar10. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and epsilon-ResNet(the blue line) of 110 layers are shown as below:
+It is to train our model on cifar10. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
 
 ![cifar10-val-error](figures/cifar10-val-error.png)
 
@@ -51,7 +50,7 @@ python cifar10-epsilon-resnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18
 Dependencies is the same as [tensorpack](https://github.com/ppwwyyxx/tensorpack):
 
 + Python 2.7 or 3
-+ Python bindings for OpenCV (Optional, but required by a lot of features)
++ Python bindings for OpenCV (Optional)
 + TensorFlow >= 1.3.0
 
 ```
@@ -66,9 +65,9 @@ git clone https://github.com/yuxwind/epsilon-resnet.git
 # put others to {tensorpack_root}/examples/ResNet
 ```
 
-## Citing epsilon-ResNet
+## Citing &epsilon;-ResNet
 
-Please cite epsilon-ResNet in your publication if it helps your research:
+Please cite &epsilon;-ResNet in your publication if it helps your research:
 
 ```
 @article{DBLP:journals/corr/abs-1804-01661,
