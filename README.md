@@ -82,5 +82,3 @@ Please cite epsilon-ResNet in your publication if it helps your research:
   year      = {2018}
 }
 ```
-
-
