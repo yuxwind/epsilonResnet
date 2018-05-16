@@ -22,7 +22,7 @@ Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/t
 
 ## imagenet-epsilon-resnet.py
 This is the training code of [epsilon-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and epsilon-ResNet of 101 layers are as below. Two epsilon values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
-<img src="figures/imagenet-val-error.png" alt="drawing" style="width: 120px;"/>
+<img src="figures/imagenet-val-error.png" alt="drawing" style="width: 20px;"/>
 
 ![imagenet-error](figures/imagenet-val-error.png)
 
