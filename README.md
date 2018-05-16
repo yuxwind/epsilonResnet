@@ -25,8 +25,6 @@ This is the training code of [epsilon-ResNet](https://arxiv.org/abs/1804.01661) 
 
 <img src="figures/imagenet-val-error.png" width="600" height="400" />
 
-![imagenet-error](figures/imagenet-val-error.png)
-
 Usage:
 
 ```
