@@ -23,7 +23,7 @@ Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/t
 ## imagenet-epsilon-resnet.py
 This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
 
-<img src="figures/imagenet-val-error.png" align="middle" width="450" height="300"/>
+<p style="text-align:center;"><img src="figures/imagenet-val-error.png" align="middle" width="450" height="300"/></p>
 
 Usage:
 
@@ -70,7 +70,7 @@ git clone https://github.com/yuxwind/epsilon-resnet.git
 Please cite &epsilon;-ResNet in your publication if it helps your research:
 
 ```
-@article{DBLP:journals/corr/abs-1804-01661,
+@article{DBLP:yu2018EpsilonResNet,
   author    = {Xin Yu and Zhiding Yu and Srikumar Ramalingam},
   title     = {Learning Strict Identity Mappings in Deep Residual Networks},
   journal   = {CoRR},
