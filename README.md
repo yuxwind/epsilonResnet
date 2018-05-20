@@ -28,7 +28,7 @@ This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661
 Usage:
 
 ```
-python imagenet-epsilon-resnet.py -d 101 -e 2.0 --gpu 4 --data {path_to_ilsvrc12_data}  -o imagenet-e_2.0-d_101
+python imagenet-epsilon-resnet.py -d 101 -e 2.0 --gpu 4 --data {path_to_ilsvrc12_data}  
 ```
 
 
