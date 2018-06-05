@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-# File: imagenet-resnet.py
+# File: imagenet-epsilon-resnet.py
 
 import cv2
 import sys
@@ -18,11 +18,14 @@ from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *
 from tensorpack.tfutils.summary import *
 
+from EpsilonResNetBase import *
+
 TOTAL_BATCH_SIZE = 256
 INPUT_SHAPE = 224
 DEPTH = None
 SIDE_POSITION = None
 EPSILON = 2.0
+
 
 class Model(ModelDesc):
     def __init__(self, data_format='NCHW'):
@@ -62,10 +65,10 @@ class Model(ModelDesc):
                 return l
         
         def basicblock(l, ch_out, stride, preact):
-            return residual_convs(l, ch_out, stride, True)
+            return residual(l, ch_out, stride, preact, True)
 
         def bottleneck(l, ch_out, stride, preact):
-            return residual_convs(l, ch_out, stride, False)
+            return residual(l, ch_out, stride, preact, False)
         
         def residual_convs(l, ch_out, stride, is_basicblock):
             if is_basicblock:
@@ -87,24 +90,14 @@ class Model(ModelDesc):
                 l = BNReLU('preact', l)
             else:
                 input = l
-            #identity_w: save the result of sparsity promoting function
-            identity_w = tf.get_variable('identity', dtype=tf.float32,
-                initializer=tf.constant(1.0), trainable = False)
-            ctx = get_current_tower_context()
             short_cut = shortcut(input, ch_in, ch_out * 4, stride)
-            if ctx.is_training:
-                l = residual_convs(l, ch_out, stride, is_basicblock)
-                w = strict_identity(l, EPSILON)
-                # update identity_w in training
-                identity_w = identity_w.assign(w)
-                l = identity_w * l + short_cut
-            else:
-                # utilize identity_w directly in test
-                l = tf.where(tf.equal(identity_w, 0.0),short_cut,
-                    residual_convs(l, ch_out, stride, is_basicblock) + short_cut)
-            # monitor is_discarded
-            is_discarded = tf.where(
-                tf.equal(identity_w,0.0), 1.0, 0.0, 'is_discarded')
+            l = residual_convs(l, ch_out, stride, is_basicblock)
+            identity_w = strict_identity(l, EPSILON)
+            l = identity_w * l + short_cut
+            
+            is_discarded = tf.subtract(1.0, identity_w, 'is_discarded')
+            #is_kept = tf.identity(identity_w, 'is_kept')
+            #add_moving_summary(is_discarded, is_kept)
             add_moving_summary(is_discarded)
             preds.append(is_discarded)
             return l
@@ -117,8 +110,8 @@ class Model(ModelDesc):
             152: ([3, 8, 36, 3], bottleneck)
         }
         defs, block_func = cfg[DEPTH]
-        # SIDE_POSITION: side supervision is placed after SIDE_POSITION-th block in group2
-        SIDE_POSITION = sum(defs)/2 - sum(defs[:2]) - 1
+        # the number of all residual blocks 
+        all_cnt = sum(defs) + 0.0 
 
         def layer(l, layername, block_func, features, count, stride, first=False):
             with tf.variable_scope(layername):
@@ -126,15 +119,15 @@ class Model(ModelDesc):
                     l = block_func(l, features, stride,
                                    'no_preact' if first else 'both_preact')
                 # add side supervision at the middle of the network
-                if layername == 'group2' && SIDE_POSITION == 0
+                if layername == 'group2' and SIDE_POSITION == 0:
                     side_output_cost.append(side_output('block0', l, 1000))
                 for i in range(1, count):
                     with tf.variable_scope('block{}'.format(i)):
                         l = block_func(l, features, 1, 'default')
-                        # add side supervision at the middle of the network
-                        if layername == 'group2' && i == SIDE_POSITION:
-                            side_output_cost.append(
-                                side_output('block{}'.format(i), l, 1000))
+                    # add side supervision at the middle of the network
+                    if layername == 'group2' and i == SIDE_POSITION:
+                        side_output_cost.append(
+                            side_output('block{}'.format(i), l, label, 1000))
                 return l
 
 
@@ -163,12 +156,18 @@ class Model(ModelDesc):
 
         wd_cost = regularize_cost('.*/W', l2_regularizer(1e-4), name='l2_regularize_loss')
         add_moving_summary(loss, wd_cost)
-       
+      
+        discarded_cnt = tf.add_n(preds, name="discarded_cnt")
+        discarded_ratio = tf.divide(
+            discarded_cnt, all_cnt, name="discarded_ratio")
+        add_moving_summary(discarded_cnt, discarded_ratio)
+
         # take side loss into the final loss
         side_loss_w = [0.1]
         side_output_cost = [tf.multiply(side_loss_w[i], side_output_cost[i])\
             for i in range(len(side_output_cost))]
-        self.cost = tf.add_n([loss, wd_cost, side_output_cost], name='cost')
+        loss = side_output_cost + [loss, wd_cost]
+        self.cost = tf.add_n(loss, name='cost')
 
     def _get_optimizer(self):
         lr = get_scalar_var('learning_rate', 0.1, summary=True)
@@ -285,7 +284,8 @@ def eval_on_ILSVRC12(model_file, data_dir):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gpu', help='comma separated list of GPU(s) to use.', required=True)
+    #parser.add_argument('--gpu', help='comma separated list of GPU(s) to use.', required=True)
+    parser.add_argument('--gpu', help='number of GPU(s) to use.', required=True,type=int)
     parser.add_argument('--data', help='ILSVRC dataset dir')
     parser.add_argument('--load', help='load model')
     parser.add_argument('--fake', help='use fakedata to test or benchmark this model', action='store_true')
@@ -294,26 +294,33 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--depth', help='resnet depth',
                         type=int, default=18, choices=[18, 34, 50, 101,152])
     parser.add_argument('--eval', action='store_true')
-    parser.add_argument('-o', '--output', help='output')
     parser.add_argument('-e', '--epsilon', help='epsilon', 
                         type=float, default='2.0')
     args = parser.parse_args()
 
     DEPTH = args.depth
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+    cfg = {
+        18: ([2, 2, 2, 2]),
+        34: ([3, 4, 6, 3]),
+        50: ([3, 4, 6, 3]),
+        101: ([3, 4, 23, 3]),
+        152: ([3, 8, 36, 3])
+    }
+    defs = cfg[DEPTH]
+    # SIDE_POSITION: side supervision is placed after SIDE_POSITION-th block in group2
+    SIDE_POSITION = sum(defs)/2 - sum(defs[:2]) - 1
+    #os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 
     if args.eval:
         BATCH_SIZE = 128    # something that can run on one gpu
         eval_on_ILSVRC12(args.load, args.data)
         sys.exit()
 
-    NR_GPU = len(args.gpu.split(','))
+    #NR_GPU = len(args.gpu.split(','))
+    NR_GPU = args.gpu
     BATCH_SIZE = TOTAL_BATCH_SIZE // NR_GPU
 
-    if args.output:
-        logger.auto_set_dir("."+args.output)
-    else:
-        logger.auto_set_dir()
+    logger.auto_set_dir()
     config = get_config(fake=args.fake, data_format=args.data_format)
     if args.load:
         config.session_init = SaverRestore(args.load)

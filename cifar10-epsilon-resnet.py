@@ -40,7 +40,7 @@ To train:
 
 BATCH_SIZE = 128
 EPSILON = 2.5
-NUM_UNITS = None 
+
 class Model(ModelDesc):
 
     def __init__(self, n):
@@ -83,21 +83,10 @@ class Model(ModelDesc):
                 short_cut = l
 
             with tf.variable_scope(name) as scope:
-                # identity_w: save the result of sparsity promoting function
-                identity_w = tf.get_variable('identity', dtype=tf.float32,
-                    initializer=tf.constant(1.0), trainable = False)
-                ctx = get_current_tower_context()
-                if ctx.is_training:
-                    l = residual_convs(l,first,out_channel,stride1)
-                    w = strict_identity(l, EPSILON)
-                    # update identity_w in training
-                    identity_w = identity_w.assign(w)
-                    # apply strict identity
-                    l = identity_w * l + short_cut
-                else:
-                    # utilize identity_w directly in test
-                    l = tf.where(tf.equal(identity_w, 0.0),short_cut,
-                            residual_convs(l,first,out_channel,stride1) + short_cut)
+                l = residual_convs(l,first,out_channel,stride1)
+                identity_w = strict_identity(l, EPSILON)
+                # apply strict identity
+                l = identity_w * l + short_cut
                 # monitor is_discarded
                 is_discarded = tf.where(
                         tf.equal(identity_w,0.0), 1.0, 0.0, 'is_discarded')
@@ -188,17 +177,17 @@ def get_config(out_dir):
     dataset_train = get_data('train')
     dataset_test = get_data('test')
     MAX_EPOCH = 1000
-    side_name = "side_output/res2.{}".format(NUM_UNITS/2)
+    side_layers = ['res2.{}'.format(NUM_UNITS/2)]
+    side_prediction_name = ["side_output/" +x for x in side_layers]
+    side_inferences = [ClassificationError(x+ "/incorrect_vector",\
+            x + "/val_error") for x in side_prediction_name]
+    inferences = side_inferences + [ScalarStats('cost'), ClassificationError()]
     return TrainConfig(
         dataflow=dataset_train,
         callbacks=[
             ModelSaver(),
-            InferenceRunner(dataset_test, 
-                [ScalarStats('cost'),ClassificationError(),
-                    ClassificationError(
-                        '{}/incorrect_vector'.format(side_name),
-                        '{}/val_error'.format(side_name))]),
-            LearningRateSetter('learning_rate','discarded_cnt',
+            InferenceRunner(dataset_test, inferences),
+            LRSetter('learning_rate','discarded_cnt',
                 [(0, 0.1), (82, 0.01), (123, 0.001), (300,0.0002)],
                 [(0, 0.1), (41, 0.01), (61, 0.001), (150,0.0002)],
                 1,1),

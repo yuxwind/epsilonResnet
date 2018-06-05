@@ -20,10 +20,15 @@ Implementation of strict identity and side output in the following paper:
 #   Usually, l is a 4 dimension tensor: Batch_size X Width X Height X Channel
 #   return 0.0 only if the absolute values of all elemenents in l are smaller than EPSILON
 def strict_identity(l, EPSILON):
+    add_moving_summary(tf.reduce_max(tf.abs(l), name='response_abs_max'))
+    add_moving_summary(tf.reduce_mean(tf.abs(l), name='response_mean_max'))
     l = tf.to_float(l)
     s = tf.reduce_max(tf.nn.relu(l - EPSILON) +\
             tf.nn.relu(-l - EPSILON))
+    #identity_w = tf.nn.relu(tf.nn.relu(s * (-1000000) + 1.0) * (-1000000) + 1.0)
     identity_w = tf.nn.relu(tf.nn.relu(s * (-1000000) + 1.0) * (-1000000) + 1.0)
+    #todo: to delete
+    identity_w = tf.where(tf.greater(s,0), 1.0, 0.0)
     return identity_w
 
 # implement side supervision at the intermediate of the network
