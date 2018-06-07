@@ -108,7 +108,7 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 
 ## Experiment lists
 
-If you would like to compare with our experiements in your research, you can directly run the following scripts.
+If you would like to compare with our experiements in your research, please run with parameters in the following scripts directly.
 
 + run_cifar10.sh
 + run_cifar100.sh
