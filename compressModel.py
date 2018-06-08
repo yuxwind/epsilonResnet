@@ -20,7 +20,7 @@ cfg = {
     152: [3, 8, 36, 3]}
 fmt_discarded = '/is_discarded: '
 fmt_global_step = '(global_step '
-discarded_treshold = 0.5
+discarded_treshold = 1
 
 
 # read log.log and extract discarded blocks
@@ -78,7 +78,7 @@ def get_discarded_block(logfile, step):
                     rst = re.search('(%s)%s(\d(.\d+(e-\d+)?)?)'%(re_NAME,fmt_discarded), 
                             l, re.IGNORECASE)
                     if rst:
-                        if float(rst.group(4)) >= discarded_treshold:
+                        if float(rst.group(4)) == 1.0:
                             print(l)
                             discarded_block.append(rst.group(1))
     #todo: what about if is_discarded in (0,1)
