@@ -96,15 +96,19 @@ python cifar10-compressed-resnet.py --cfg models/cifar10-n_125/compressed_model_
 
 We use a variable is\_discarded to show the result of the promoting function S(F(x)) in each step. The standard learning rate policy is applied on ImageNet. Some blocks may have no sufficient epochs to decay to zeros.
 
-We maintain this variable with [tf.train.ExponentialMovingAverage](https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage) in our experiments to know the value history in previous steps. Its value of 1 indicates the block is discarded. Before a block decays to zeros, its moving average value may be in the range (0,1) as observed in log.log of ImageNet experiments. Finally, we can just prune the blocks whose weights decay to zeros. Or we prune a block if the moving average value is greater than a treshold. That's is discarded\_threshold in compressModel.py. 
+We maintain this variable with [tf.train.ExponentialMovingAverage](https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage) in our experiments to know the value history in previous steps. Its value of 1 indicates the block is discarded. Before a block decays to zeros, its moving average value may be in the range (0,1) as observed in log.log of ImageNet experiments. Finally, we only prune the blocks whose weights decay to zeros. 
 
-On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_treshold and get results as below.  
+<!---
+Or we prune a block if the moving average value is greater than a treshold. That's is discarded\_threshold in compressModel.py.
 
-|  discarded\_treshold | 0.5   |  1 | 0.3  | 
-|---|---|---|---|
-| val\_error\_top1  	|0.23036 |  0.23182 |  0.23448  | 
-| val\_error\_top5  	|0.06694 |  0.06744 |  0.0694   |  
-| #discarded block  |7   	  |  6			|  8 |   
+On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_treshold and get results as below. 
+
+[//]: # (|  discarded\_treshold | 0.5   |  1 | 0.3  |)
+[//]: # (|---|---|---|---|)
+[//]: # (| val\_error\_top1  	|0.23036 |  0.23182 |  0.23448  | )
+[//]: # (| val\_error\_top5  	|0.06694 |  0.06744 |  0.0694   |  )
+[//]: # (| #discarded block  |7   	  |  6|  8 |  ) 
+-->
 
 ## Experiment lists
 
