@@ -43,6 +43,8 @@ To train:
 BATCH_SIZE = 128
 EPSILON = 2.5
 NUM_UNITS = None
+IS_CIFAR10 = True
+NUM_CLASS = 10
 
 class Model(ModelDesc):
 
@@ -111,7 +113,7 @@ class Model(ModelDesc):
             for k in range(1, self.n):
                 l = residual('res2.{}'.format(k), l)
                 if k == self.n/2:
-                    side_output_cost.append(side_output('res2.{}'.format(k), l, label, 10))
+                    side_output_cost.append(side_output('res2.{}'.format(k), l, label, NUM_CLASS))
             # 16,c=32
             l = residual('res3.0', l, increase_dim=True)
             for k in range(1, self.n):
@@ -119,8 +121,7 @@ class Model(ModelDesc):
             l = BNReLU('bnlast', l)
             # 8,c=64
             l = GlobalAvgPooling('gap', l)
-        #for cifar10 
-        logits = FullyConnected('linear', l, out_dim=10, nl=tf.identity)
+            logits = FullyConnected('linear', l, out_dim=NUM_CLASS, nl=tf.identity)
         cost = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=label)
         cost = tf.reduce_mean(cost, name='cross_entropy_loss')
         wrong = prediction_incorrect(logits, label)
@@ -154,7 +155,12 @@ class Model(ModelDesc):
 
 def get_data(train_or_test):
     isTrain = train_or_test == 'train'
-    ds = dataset.Cifar10(train_or_test)
+    if IS_CIFAR10:
+        print('train on cifar10')
+        ds = dataset.Cifar10(train_or_test)
+    else:
+        print('train on cifar100')
+        ds = dataset.Cifar100(train_or_test)
     pp_mean = ds.get_per_pixel_mean()
     if isTrain:
         augmentors = [
@@ -222,6 +228,10 @@ if __name__ == '__main__':
     parser.add_argument('--load', help='load model')
     parser.add_argument('-e', '--epsilon', help='set epsilon')
     parser.add_argument('-o', '--output', help='output')
+    feature_parser = parser.add_mutually_exclusive_group(required=False)
+    feature_parser.add_argument('--cifar10', help='iscifar10', dest='dataset', action = 'store_true')
+    feature_parser.add_argument('--cifar100', help='iscifar100', dest='dataset', action = 'store_false')
+
     parser.set_defaults(feature=True)
 
     args = parser.parse_args()
@@ -230,6 +240,10 @@ if __name__ == '__main__':
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     if args.epsilon:
         EPSILON = float(args.epsilon)
+    if not args.dataset:
+        print('args.dataset: {}'.format(args.dataset))
+        IS_CIFAR10 = args.dataset
+        NUM_CLASS = 100
     out_dir = ""
     if args.output:
         out_dir = "." + args.output
