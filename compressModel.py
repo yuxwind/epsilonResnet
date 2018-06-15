@@ -35,7 +35,7 @@ def get_discarded_block(logfile, step):
     for l in open(logfile, 'r'):
         if idx == 0:
             idx = 1
-            if 'cifar' in l:
+            if 'cifar' in l or 'svhn' in l:
                 is_cifar_model = True
                 re_NAME = re_NAME_CIFAR
                 rst = re.search('-n ?(\d+)', l, re.IGNORECASE)
@@ -81,10 +81,6 @@ def get_discarded_block(logfile, step):
                         if float(rst.group(4)) == 1.0:
                             print(l)
                             discarded_block.append(rst.group(1))
-    #todo: what about if is_discarded in (0,1)
-    #assert math.floor(discarded_cnt) == len(discarded_block), \
-    #        'discarded_cnt and len(discarded_block) are unequal: {}, {}'.format(\
-    #        discarded_cnt, len(discarded_block))
     return N, is_cifar_model, discarded_block, val_error
                
 def setup(model_dir, step):

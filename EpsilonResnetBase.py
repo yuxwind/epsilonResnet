@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-# File: EpsilonResNetBase.py
+# File: EpsilonResnetBase.py
 # Author: Xin Yu <yuxwind@gmail.com>
 
 import sys
@@ -25,10 +25,7 @@ def strict_identity(l, EPSILON):
     l = tf.to_float(l)
     s = tf.reduce_max(tf.nn.relu(l - EPSILON) +\
             tf.nn.relu(-l - EPSILON))
-    #identity_w = tf.nn.relu(tf.nn.relu(s * (-1000000) + 1.0) * (-1000000) + 1.0)
     identity_w = tf.nn.relu(tf.nn.relu(s * (-1000000) + 1.0) * (-1000000) + 1.0)
-    #todo: to delete
-    identity_w = tf.where(tf.greater(s,0), 1.0, 0.0)
     return identity_w
 
 # implement side supervision at the intermediate of the network

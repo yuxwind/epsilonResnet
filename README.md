@@ -4,7 +4,7 @@
 # Implementation
 Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet) of [tensorpack](https://github.com/ppwwyyxx/tensorpack). The idea is simple. We only add a few functions and make necessary changes on the original [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet). Hightlights include:
 
-- EpsilonResNetBase.py
+- EpsilonResnetBase.py
 
 	Implementation of sparsity promting function with 4 ReLUs and side supervision at the intermediate of the network.
  
@@ -12,9 +12,9 @@ Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/t
 
 	A callback class for the impletmentation of adaptive learning rate. When the number of discarded layers increases, the adaptive learning rate is actived.
 	
-- imagenet-epsilon-resnet.py and cifar10-epsilon-resnet.py
+- imagenetEpsilonResnet.py, cifarEpsilonResnet.py, svhnEpsilonResnet.py
 
-	Training on ImageNet and Cifar10 datasets. We make no change on data augmentation. Modifications include: 
+	Training on ImageNet, CIFAR-10, CIFAR-100, SVHN datasets. We make no change on data augmentation. Modifications include: 
 	
 	+ In \_build\_graph(), strict\_identity() function is applied in residual functions. 
 	+ In get_config(), a InferenceRunner() instance is added for side supervision; a LearningRateSetter() instance is added for adaptive learning rate.
@@ -36,7 +36,7 @@ Thus, the result of S(F(X)) of a residual block is relatively stable because of 
 	 
 # Experiments	
 ## &epsilon;-ResNet
-### imagenet-epsilon-resnet.py
+### imagenetEpsilonResnet.py
 This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
 
 <p style="text-align:center;"><img src="figures/imagenet-val-error.png" align="middle" width="450" height="300"/></p>
@@ -44,12 +44,12 @@ This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661
 Usage:
 
 ```
-python imagenet-epsilon-resnet.py -d 101 -e 2.0 --gpu 4 --data {path_to_ilsvrc12_data}  
+python imagenetEpsilonResnet.py -d 101 -e 2.0 --gpu 0,1,2,3 --data {path_to_ilsvrc12_data}  
 ```
 
 
-### cifar10-epsilon-resnet.py
-It is to train our model on cifar10. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
+### cifarEpsilonResnet.py
+It is to train our model on CIFAR-10 and CIFAR-100. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
 
 ![cifar10-val-error](figures/cifar10-val-error.png)
 
@@ -59,7 +59,7 @@ The following figure shows the adaptive learning rate of this experiment. The tw
 Usage:
 
 ```
-python cifar10-epsilon-resnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18 
+python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18 
 ```
 
 ## compress model
@@ -69,7 +69,7 @@ The script compressModel.py will compress a model obtained during train. The par
 Usage:
 
 ```
-python compressModel.py --dir models/cifar10-n_125 --step 303420
+python compressModel.py --dir models/cifar10-e_2.5-n_125 --step 303420
 
 ```
 
@@ -83,13 +83,13 @@ It will generate compressed model files:
 + The structure of comopressed model is stored in compressed\_model\_303420.cfg
 + The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
 
-### cifar10-compressed-resnet.py
-The script cifar10-compressed-resnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model.
+### cifarCompressedResnet.py
+The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model.
 
 Usage:
 
 ``` 
-python cifar10-compressed-resnet.py --cfg models/cifar10-n_125/compressed_model_303420.cfg --gpu 0 --cifar10 
+python cifarCompressedResnet.py --cfg models/cifar10-n_125/compressed_model_303420.cfg --gpu 0 --cifar10 
 ```
 
 ### Discussion on compressing ImageNet models

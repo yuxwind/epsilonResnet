@@ -1,0 +1,4 @@
+train_log*
+all_vars_L50.txt
+svhn-1.sh
+svhn-2.sh

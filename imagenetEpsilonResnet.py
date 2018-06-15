@@ -18,7 +18,7 @@ from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *
 from tensorpack.tfutils.summary import *
 
-from EpsilonResNetBase import *
+from EpsilonResnetBase import *
 
 TOTAL_BATCH_SIZE = 256
 INPUT_SHAPE = 224
