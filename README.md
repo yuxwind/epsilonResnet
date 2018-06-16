@@ -1,21 +1,20 @@
-Table of Contents
-=================
+<!--ts-->
+   * [ε-ResNet](# &epsilon;-ResNet)
+   * [Install](#install)
+   * [Experiments](#experiments)
+      * [ε-ResNet](#ε-resnet-1)
+         * [imagenetEpsilonResnet.py](#imagenetepsilonresnetpy)
+      * [compress model](#compress-model)
+         * [compressModel.py](#compressmodelpy)
+         * [Test on compressed models](#test-on-compressed-models)
+         * [Discussion on compressing ImageNet models](#discussion-on-compressing-imagenet-models)
+      * [Experiment lists](#experiment-lists)
+   * [Implementation](#implementation)
+   * [Citing ε-ResNet](#citing-ε-resnet)
 
-   * [ε-ResNet](#&epsilon;-ResNet)
-   * [Install]()
-   * [Experiments]()
-      * [ε-ResNet]()
-         * [imagenetEpsilonResnet.py]()
-         * [cifarEpsilonResnet.py]()
-      * [compress model]()
-         * [compressModel.py]()
-         * [cifarCompressedResnet.py]()
-         * [Discussion on compressing ImageNet models]()
-      * [Experiment lists]()
-   * [Implementation]()
-   * [Citing ε-ResNet]()
+<!-- Added by: xiny, at:  -->
 
-
+<!--te-->
 # &epsilon;-ResNet
 [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) is a variant of ResNet to automatically discard redundant layers, which produces responses that are smaller than a threshold &epsilon;, with a marginal or no loss in performance.
 
