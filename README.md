@@ -13,7 +13,7 @@ Table of Contents
          * [Discussion on compressing ImageNet models]()
       * [Experiment lists]()
    * [Install]()
-      * [Citing ε-ResNet]()
+   * [Citing ε-ResNet]()
 
 
 # &epsilon;-ResNet
@@ -160,7 +160,7 @@ git clone https://github.com/yuxwind/epsilon-resnet.git
 # put LearningRateSetter.py to {tensorpack_root}/tensorpack/callbacks/
 ```
 
-## Citing &epsilon;-ResNet
+# Citing &epsilon;-ResNet
 
 Please cite &epsilon;-ResNet in your publication if it helps your research:
 
