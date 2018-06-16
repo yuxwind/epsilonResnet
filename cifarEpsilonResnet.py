@@ -10,7 +10,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.append('../../../tensorpack')
+sys.path.append('../tensorpack')
 from tensorpack import *
 from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *
@@ -181,7 +181,7 @@ def get_data(train_or_test):
 
 def get_config(out_dir):
     print("outdir: %s"%out_dir)
-    logger.auto_set_dir(outdir=out_dir)
+    logger.set_logger_dir('train_log.' + out_dir)
     dataset_train = get_data('train')
     dataset_test = get_data('test')
     MAX_EPOCH = 1000
@@ -195,7 +195,7 @@ def get_config(out_dir):
         callbacks=[
             ModelSaver(),
             InferenceRunner(dataset_test, inferences),
-            LRSetter('learning_rate','discarded_cnt',
+            LearningRateSetter('learning_rate','discarded_cnt',
                 [(0, 0.1), (82, 0.01), (123, 0.001), (300,0.0002)],
                 [(0, 0.1), (41, 0.01), (61, 0.001), (150,0.0002)],
                 1,1),
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     parser.add_argument('--load', help='load model')
     parser.add_argument('-e', '--epsilon', help='set epsilon')
     parser.add_argument('-o', '--output', help='output')
-    feature_parser = parser.add_mutually_exclusive_group(required=False)
+    feature_parser = parser.add_mutually_exclusive_group(required=True)
     feature_parser.add_argument('--cifar10', help='iscifar10', dest='dataset', action = 'store_true')
     feature_parser.add_argument('--cifar100', help='iscifar100', dest='dataset', action = 'store_false')
 

@@ -9,7 +9,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.append('../../../tensorpack')
+sys.path.append('../tensorpack')
 from tensorpack import *
 #from tensorpack import InputDesc,
 from tensorpack.utils.stats import RatioCounter
@@ -62,7 +62,7 @@ def get_data(train_or_test):
     return ds
 
 def get_config():
-    logger.auto_set_dir(outdir=OUTDIR)
+    logger.set_logger_dir('train_log.' + out_dir)
     dataset_train = get_data('train')
     dataset_test = get_data('test')
     MAX_EPOCH = 200

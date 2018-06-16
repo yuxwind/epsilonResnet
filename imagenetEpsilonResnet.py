@@ -8,11 +8,10 @@ import argparse
 import numpy as np
 import os
 import multiprocessing
-
-sys.path.append('../../')
-
 import tensorflow as tf
 from tensorflow.contrib.layers import variance_scaling_initializer
+
+sys.path.append('../tensorpack')
 from tensorpack import *
 from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *

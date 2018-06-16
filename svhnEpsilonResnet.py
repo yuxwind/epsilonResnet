@@ -10,7 +10,8 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.append('../../../tensorpack')
+
+sys.path.append('../tensorpack')
 from tensorpack import *
 from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *
@@ -62,7 +63,7 @@ def get_data(train_or_test):
 
 def get_config(out_dir):
     print("outdir: %s"%out_dir)
-    logger.auto_set_dir(outdir=out_dir)
+    logger.set_logger_dir('train_log.' + out_dir)
     dataset_train = get_data('train')
     dataset_test = get_data('test')
     MAX_EPOCH = 200
@@ -76,7 +77,7 @@ def get_config(out_dir):
         callbacks=[
             ModelSaver(),
             InferenceRunner(dataset_test, inferences),
-            LRSetter('learning_rate','discarded_cnt',
+            LearningRateSetter('learning_rate','discarded_cnt',
                 [(1, 0.1), (20, 0.01), (28, 0.001), (50, 0.0001)],
                 [(1, 0.1), (10, 0.01), (14, 0.001), (25, 0.0001)],
                 1,1),

@@ -11,7 +11,6 @@ import os
 
 from .base import Callback
 from ..utils import logger
-from ..tfutils import get_op_tensor_name
 from param import HyperParamSetter
 
 __all__ = ['LearningRateSetter']
