@@ -1,7 +1,7 @@
 Table of Contents
 =================
 
-   * [ε-ResNet](&epsilon;-ResNet)
+   * [ε-ResNet](#&epsilon;-ResNet)
    * [Install]()
    * [Experiments]()
       * [ε-ResNet]()
