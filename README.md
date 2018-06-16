@@ -36,9 +36,10 @@ git clone https://github.com/ppwwyyxx/tensorpack.git
 git checkout tags/0.2.0
 
 # pull epsilon-ResNet
-git clone https://github.com/yuxwind/epsilon-resnet.git
+https://github.com/yuxwind/epsilonResnet.git
 
-# put LearningRateSetter.py to {tensorpack_root}/tensorpack/callbacks/
+cp LearningRateSetter.py {tensorpack_root}/tensorpack/callbacks/
+cd epsilonResnet
 ```
 	 
 # Experiments	
@@ -92,7 +93,7 @@ It will generate compressed model files:
 + The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
 
 ### Test on compressed models
-Here is an example to test on CIFAR-10 datasets. The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model. The scripts on other datasets are also provided.
+Here is an example to test on CIFAR-10 dataset. The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model. The scripts on other datasets are also provided.
 
 Usage:
 
