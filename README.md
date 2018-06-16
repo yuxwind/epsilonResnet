@@ -1,5 +1,7 @@
 <!--ts-->
-   * [ε-ResNet](# &epsilon;-ResNet)
+Table of Contents
+=================
+   * [ε-ResNet](#ε-resnet)
    * [Install](#install)
    * [Experiments](#experiments)
       * [ε-ResNet](#ε-resnet-1)
