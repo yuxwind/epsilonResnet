@@ -66,7 +66,7 @@ python imagenetEpsilonResnet.py -d 101 -e 2.0 --gpu 0,1,2,3 --data {path_to_ilsv
 ```
 
 
-### cifarEpsilonResnet.py
+### 
 It is to train our model on CIFAR-10 and CIFAR-100. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
 
 ![cifar10-val-error](figures/cifar10-val-error.png)
@@ -79,6 +79,7 @@ Usage:
 ```
 python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18 
 ```
+Note: svhnEpsilonResnet.py is also provided, whose usage is similar.
 
 ## compress model
 ### compressModel.py
@@ -101,8 +102,8 @@ It will generate compressed model files:
 + The structure of comopressed model is stored in compressed\_model\_303420.cfg
 + The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
 
-### cifarCompressedResnet.py
-The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model.
+### Test on compressed models
+Here is an example to test on CIFAR-10 datasets. The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model. The scripts on other datasets are also provided.
 
 Usage:
 
