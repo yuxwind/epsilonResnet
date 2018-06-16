@@ -91,7 +91,8 @@ Usage:
 ``` 
 python cifarCompressedResnet.py --cfg models/cifar10-n_125/compressed_model_303420.cfg --gpu 0 --cifar10 
 ```
-### [&trained and compressed model example](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
+
+A few trained and compressed models on CIFAR-10 and ImageNet are listed [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
 
 ### Discussion on compressing ImageNet models
 
