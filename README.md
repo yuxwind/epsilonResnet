@@ -48,7 +48,7 @@ cd epsilonResnet
 # Experiments	
 ## List of Experiments
 
-If you would like to compare with our experiments in your research, please run with parameters in the following scripts directly.
+If you would like to compare with our experiments in your research, please run the following scripts directly.
 
 + run_cifar10.sh
 + run_cifar100.sh
@@ -81,11 +81,18 @@ Usage:
 ```
 python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18 
 ```
-Note: svhnEpsilonResnet.py is also provided, whose usage is similar.
+Note: svhnEpsilonResnet.py is also provided with similar usage.
 
 ## Testing
 ### compressModel.py
-The script compressModel.py will compress a model obtained during train. The parameter '--dir' specifies the train_log file directory and '--step' specifies the model of which step is to be compressed.
+The script compressModel.py will compress a model obtained during train. 
+
+Parameters:
+
+```
+ --dir:  specifies the train_log file directory
+ --step:  specifies the model of which step is to be compressed.
+```
 
 Usage:
 
@@ -101,7 +108,7 @@ NOTE: the following files are required in '--dir'
 
 It will generate compressed model files:
 
-+ The structure of compressed model is stored in compressed\_model\_303420.cfg
++ The configuration of compressed model: compressed\_model\_303420.cfg.
 + The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
 
 ### Test on compressed models
