@@ -4,14 +4,15 @@ Table of Contents
    * [ε-ResNet](#ε-resnet)
    * [Install](#install)
    * [Experiments](#experiments)
-      * [ε-ResNet](#ε-resnet-1)
+   	   * [Experiment lists](#experiment-lists)
+      * [Training](#training)
          * [imagenetEpsilonResnet.py](#imagenetepsilonresnetpy)
          * [cifarEpsilonResnet.py](#cifarepsilonresnetpy)
-      * [compress model](#compress-model)
+      * [Testing](#testing)
          * [compressModel.py](#compressmodelpy)
          * [Test on compressed models](#test-on-compressed-models)
          * [Discussion on compressing ImageNet models](#discussion-on-compressing-imagenet-models)
-      * [Experiment lists](#experiment-lists)
+      
    * [Implementation](#implementation)
    * [Citing ε-ResNet](#citing-ε-resnet)
 
@@ -45,7 +46,16 @@ cd epsilonResnet
 ```
 	 
 # Experiments	
-## &epsilon;-ResNet
+## List of Experiments
+
+If you would like to compare with our experiments in your research, please run with parameters in the following scripts directly.
+
++ run_cifar10.sh
++ run_cifar100.sh
++ run_imagenet.sh
++ run_svhn.sh
+
+## Training
 ### imagenetEpsilonResnet.py
 This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio separately.
 
@@ -73,7 +83,7 @@ python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18
 ```
 Note: svhnEpsilonResnet.py is also provided, whose usage is similar.
 
-## compress model
+## Testing
 ### compressModel.py
 The script compressModel.py will compress a model obtained during train. The parameter '--dir' specifies the train_log file directory and '--step' specifies the model of which step is to be compressed.
 
@@ -122,15 +132,6 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 [//]: # (| val\_error\_top5  	|0.06694 |  0.06744 |  0.0694   |  )
 [//]: # (| #discarded block  |7   	  |  6|  8 |  ) 
 -->
-
-## Experiment lists
-
-If you would like to compare with our experiments in your research, please run with parameters in the following scripts directly.
-
-+ run_cifar10.sh
-+ run_cifar100.sh
-+ run_imagenet.sh
-+ run_svhn.sh
 
 
 # Implementation
