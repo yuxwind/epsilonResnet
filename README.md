@@ -6,6 +6,7 @@ Table of Contents
    * [Experiments](#experiments)
       * [ε-ResNet](#ε-resnet-1)
          * [imagenetEpsilonResnet.py](#imagenetepsilonresnetpy)
+         * [cifarEpsilonResnet.py](#cifarepsilonresnetpy)
       * [compress model](#compress-model)
          * [compressModel.py](#compressmodelpy)
          * [Test on compressed models](#test-on-compressed-models)
@@ -46,7 +47,7 @@ cd epsilonResnet
 # Experiments	
 ## &epsilon;-ResNet
 ### imagenetEpsilonResnet.py
-This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activatation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio seperately.
+This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio separately.
 
 <p style="text-align:center;"><img src="figures/imagenet-val-error.png" align="middle" width="450" height="300"/></p>
 
@@ -57,7 +58,7 @@ python imagenetEpsilonResnet.py -d 101 -e 2.0 --gpu 0,1,2,3 --data {path_to_ilsv
 ```
 
 
-### 
+### cifarEpsilonResnet.py
 It is to train our model on CIFAR-10 and CIFAR-100. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
 
 ![cifar10-val-error](figures/cifar10-val-error.png)
@@ -90,7 +91,7 @@ NOTE: the following files are required in '--dir'
 
 It will generate compressed model files:
 
-+ The structure of comopressed model is stored in compressed\_model\_303420.cfg
++ The structure of compressed model is stored in compressed\_model\_303420.cfg
 + The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
 
 ### Test on compressed models
@@ -111,7 +112,7 @@ We use a variable is\_discarded to show the result of the promoting function S(F
 We maintain this variable with [tf.train.ExponentialMovingAverage](https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage) in our experiments to know the value history in previous steps. Its value of 1 indicates the block is discarded. Before a block decays to zeros, its moving average value may be in the range (0,1) as observed in log.log of ImageNet experiments. Finally, we only prune the blocks whose weights decay to zeros. 
 
 <!---
-Or we prune a block if the moving average value is greater than a treshold. That's is discarded\_threshold in compressModel.py.
+Or we prune a block if the moving average value is greater than a threshold. That's is discarded\_threshold in compressModel.py.
 
 On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_treshold and get results as below. 
 
@@ -124,7 +125,7 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 
 ## Experiment lists
 
-If you would like to compare with our experiements in your research, please run with parameters in the following scripts directly.
+If you would like to compare with our experiments in your research, please run with parameters in the following scripts directly.
 
 + run_cifar10.sh
 + run_cifar100.sh
@@ -133,15 +134,15 @@ If you would like to compare with our experiements in your research, please run 
 
 
 # Implementation
-Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet) of [tensorpack](https://github.com/ppwwyyxx/tensorpack). The idea is simple. We only add a few functions and make necessary changes on the original [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet). Hightlights include:
+Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet) of [tensorpack](https://github.com/ppwwyyxx/tensorpack). The idea is simple. We only add a few functions and make necessary changes on the original [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet). Highlights include:
 
 - EpsilonResnetBase.py
 
-	Implementation of sparsity promting function with 4 ReLUs and side supervision at the intermediate of the network.
+	Implementation of sparsity promoting function with 4 ReLUs and side supervision at the intermediate of the network.
  
 - LearningRateSetter.py
 
-	A callback class for the impletmentation of adaptive learning rate. When the number of discarded layers increases, the adaptive learning rate is actived.
+	A callback class for the implementation of adaptive learning rate. When the number of discarded layers increases, the adaptive learning rate is activated.
 	
 - imagenetEpsilonResnet.py, cifarEpsilonResnet.py, svhnEpsilonResnet.py
 
@@ -163,7 +164,7 @@ Thus, the result of S(F(X)) of a residual block is relatively stable because of 
 	+ ImageNet experiments apply the standard learning rate policy.
 	+ Let's take the adaptive learning rate on Cifar10 and Cifar100 as example:
 	
-		At the begging of training, we follow the standard learning rate policy. We start with a learning rate of 0.1 and decrease it by a factor of 10 at epochs 82 and 123. That is lr=0.1 at epoch 1, lr = 0.01 at epoch 82, lr = 0.001 at epoch 123. If the network starts losing layer, the standard learning rate policy will stop and the adaptive learning rate policy begin to work: every time a layer is lost, the learning rate will be set to 0.1 again. For example, if a layer is lost at epoch N, the learning rate will become 0.1 at epoch N+1, will be 0.01 at epoch N+41, and be 0.001 at epoch N+61. 
+		At the begining of training, we follow the standard learning rate policy. We start with a learning rate of 0.1 and decrease it by a factor of 10 at epochs 82 and 123. That is lr=0.1 at epoch 1, lr = 0.01 at epoch 82, lr = 0.001 at epoch 123. If the network starts losing layer, the standard learning rate policy will stop and the adaptive learning rate policy begin to work: every time a layer is lost, the learning rate will be set to 0.1 again. For example, if a layer is lost at epoch N, the learning rate will become 0.1 at epoch N+1, will be 0.01 at epoch N+41, and be 0.001 at epoch N+61. 
 # Citing &epsilon;-ResNet
 
 Please cite &epsilon;-ResNet in your publication if it helps your research:
