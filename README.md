@@ -40,7 +40,7 @@ git checkout tags/0.2.0
 https://github.com/yuxwind/epsilonResnet.git
 
 cp LearningRateSetter.py {tensorpack_root}/tensorpack/callbacks/
-cd epsilonResnet
+cd epsilonResnet/scripts
 ```
 	 
 ## Datasets
