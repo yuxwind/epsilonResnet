@@ -145,7 +145,7 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 
 
 ## Implementation
-Please refer to [implementation_notes.md](scripts/implementation_notes.md) for the notes of implementation. 
+Please refer to [here](scripts/README.md) for more details of implementation. 
 ## Citing &epsilon;-ResNet
 
 Please cite &epsilon;-ResNet in your publication if it helps your research:
