@@ -43,7 +43,7 @@ cp LearningRateSetter.py {tensorpack_root}/tensorpack/callbacks/
 cd epsilonResnet/scripts
 ```
 	 
-## Datasets
+# Datasets
 
 &epsilon;-ResNet is tested on four datasets: CIFAR-10, CIFAR100, SVHN, ImageNet. 
 
@@ -56,7 +56,7 @@ If you would like to compare with our experiments in your research, please run t
 
 A few trained and compressed models on CIFAR-10 and ImageNet are provided [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
 
-## Training
+# Training
 
 ### On ImageNet
 Here is an example of training on ImageNet with two variants of ResNet 101: Pre-activation ResNet(the standard one) and &epsilon;-ResNet.
@@ -92,7 +92,7 @@ python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18
 ```
 Note: The usage of training CIFAR100, SVHN are similar. Please refer to their scripts for examples.
 
-## Testing
+# Testing
 ### Compressing model
 We do testing on an standard ResNet after discarding the redundant layers. 
 
