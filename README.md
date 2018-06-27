@@ -43,7 +43,7 @@ cp LearningRateSetter.py {tensorpack_root}/tensorpack/callbacks/
 cd epsilonResnet
 ```
 	 
-## datasets
+## Datasets
 
 &epsilon;-ResNet is tested on four datasets: CIFAR-10, CIFAR100, SVHN, ImageNet. 
 
