@@ -151,11 +151,11 @@ Please refer to [implementation_notes.md](scripts/implementation_notes.md) for t
 Please cite &epsilon;-ResNet in your publication if it helps your research:
 
 ```
-@article{DBLP:yu2018EpsilonResNet,
-  author    = {Xin Yu and Zhiding Yu and Srikumar Ramalingam},
-  title     = {Learning Strict Identity Mappings in Deep Residual Networks},
-  journal   = {CoRR},
-  volume    = {abs/1804.01661},
-  year      = {2018}
+@InProceedings{Yu_2018_CVPR,
+author = {Yu, Xin and Yu, Zhiding and Ramalingam, Srikumar},
+title = {Learning Strict Identity Mappings in Deep Residual Networks},
+booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+month = {June},
+year = {2018}
 }
 ```
