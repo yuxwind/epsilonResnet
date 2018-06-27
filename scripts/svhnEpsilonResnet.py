@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 import sys
 
-sys.path.append('../tensorpack')
+sys.path.append('../../tensorpack')
 from tensorpack import *
 from tensorpack.utils.stats import RatioCounter
 from tensorpack.tfutils.symbolic_functions import *

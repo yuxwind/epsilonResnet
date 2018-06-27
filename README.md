@@ -3,15 +3,13 @@ Table of Contents
 =================
    * [ε-ResNet](#ε-resnet)
    * [Installation](#installation)
-   * [Experiments](#experiments)
-   	   * [Datasets](#Datasets)
-      * [Training](#training)
-         * [On ImageNet](#on-imagenet)
-         * [On other datasets](#on-other-datasets)
-      * [Testing](#testing)
-         * [Compressing model](#compressing-model)
-         * [Testing compressed model](#testing-compressed-model)
-         * [Discussion on compressing ImageNet models](#discussion-on-compressing-imagenet-models)
+   * [Datasets](#Datasets)
+   * [Training](#training)
+   	   * [On ImageNet](#on-imagenet)
+      * [On other datasets](#on-other-datasets)
+   * [Testing](#testing)
+      * [Compressing model](#compressing-model)
+      * [Testing compressed model](#testing-compressed-model)
       
    * [Implementation](#implementation)
    * [Citing ε-ResNet](#citing-ε-resnet)
@@ -45,7 +43,6 @@ cp LearningRateSetter.py {tensorpack_root}/tensorpack/callbacks/
 cd epsilonResnet
 ```
 	 
-# Experiments	
 ## datasets
 
 &epsilon;-ResNet is tested on four datasets: CIFAR-10, CIFAR100, SVHN, ImageNet. 
@@ -125,7 +122,7 @@ compressed_model_303420.index
 ```
 
 ### Testing compressed model
-Here is an example to test on CIFAR-10 dataset. The script cifarCompressedResnet.py builds a standard ResNet based on '*.cfg' file. 
+Here is an example to test on CIFAR-10 dataset. The script cifarCompressedResnet.py builds a standard ResNet. It reads '*.cfg' file to get the structure of the compressed model.
 
 Usage:
 
@@ -147,9 +144,9 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 -->
 
 
-# Implementation
+## Implementation
 Please refer to [implementation_notes.md](implementation_notes.md) for the notes of implementation. 
-# Citing &epsilon;-ResNet
+## Citing &epsilon;-ResNet
 
 Please cite &epsilon;-ResNet in your publication if it helps your research:
 

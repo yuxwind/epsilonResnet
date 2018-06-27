@@ -9,7 +9,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.append('../tensorpack')
+sys.path.append('../../tensorpack')
 from tensorpack import *
 #from tensorpack import InputDesc,
 from tensorpack.utils.stats import RatioCounter

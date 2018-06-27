@@ -4,7 +4,7 @@
 # Author: Xin Yu <yuxwind@gmail.com>
 
 import sys
-sys.path.append('../tensorpack')
+sys.path.append('../../tensorpack')
 from tensorpack import *
 from tensorpack.tfutils.symbolic_functions import *
 from tensorpack.tfutils.summary import *
