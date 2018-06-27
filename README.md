@@ -2,15 +2,15 @@
 Table of Contents
 =================
    * [ε-ResNet](#ε-resnet)
-   * [Install](#install)
+   * [Installation](#installation)
    * [Experiments](#experiments)
-   	   * [Experiment lists](#experiment-lists)
+   	   * [Datasets](#Datasets)
       * [Training](#training)
-         * [imagenetEpsilonResnet.py](#imagenetepsilonresnetpy)
-         * [cifarEpsilonResnet.py](#cifarepsilonresnetpy)
+         * [On ImageNet](#on-imagenet)
+         * [On other datasets](#on-other-datasets)
       * [Testing](#testing)
-         * [compressModel.py](#compressmodelpy)
-         * [Test on compressed models](#test-on-compressed-models)
+         * [Compressing model](#compressing-model)
+         * [Testing compressed model](#testing-compressed-model)
          * [Discussion on compressing ImageNet models](#discussion-on-compressing-imagenet-models)
       
    * [Implementation](#implementation)
@@ -23,7 +23,7 @@ Table of Contents
 [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) is a variant of ResNet to automatically discard redundant layers, which produces responses that are smaller than a threshold &epsilon;, with a marginal or no loss in performance.
 
 
-# Install
+# Installation
 
 Dependencies is the same as [tensorpack](https://github.com/ppwwyyxx/tensorpack):
 
@@ -46,7 +46,9 @@ cd epsilonResnet
 ```
 	 
 # Experiments	
-## List of Experiments
+## datasets
+
+&epsilon;-ResNet is tested on four datasets: CIFAR-10, CIFAR100, SVHN, ImageNet. 
 
 If you would like to compare with our experiments in your research, please run the following scripts directly.
 
@@ -55,9 +57,14 @@ If you would like to compare with our experiments in your research, please run t
 + run_imagenet.sh
 + run_svhn.sh
 
+A few trained and compressed models on CIFAR-10 and ImageNet are listed [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
+
 ## Training
-### imagenetEpsilonResnet.py
-This is the training code of [&epsilon;-ResNet](https://arxiv.org/abs/1804.01661) on ImageNet. The experiment results on Pre-activation ResNet(the standard one) and &epsilon;-ResNet of 101 layers are as below. Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio separately.
+
+### On ImageNet
+Here is an example of training on ImageNet with two variants of ResNet 101: Pre-activation ResNet(the standard one) and &epsilon;-ResNet.
+
+Two &epsilon; values 2.0 and 2.1 give out 20.12% and 25.60% compression ratio separately.
 
 <p style="text-align:center;"><img src="figures/imagenet-val-error.png" align="middle" width="450" height="300"/></p>
 
@@ -68,12 +75,17 @@ python imagenetEpsilonResnet.py -d 101 -e 2.0 --gpu 0,1,2,3 --data {path_to_ilsv
 ```
 
 
-### cifarEpsilonResnet.py
-It is to train our model on CIFAR-10 and CIFAR-100. The experiment results on Pre-activation ResNet(the orange line), Pre-activation ResNet(the purple line), and &epsilon;-ResNet(the blue line) of 110 layers with &epsilon; of 2.5 are shown as below:
+### On other datasets
+Here is an example of training on CIFAR-10 with ResNet-110:
+
++ Pre-activation ResNet(the orange line)
++ Pre-activation ResNet + side supervision(the purple line)
++ &epsilon;-ResNet(the blue line， &epsilon;=2.5)
+	
 
 ![cifar10-val-error](figures/cifar10-val-error.png)
 
-The following figure shows the adaptive learning rate of this experiment. The two baselines adopt the same learning rate policy. 
+Their learning rates are as below. The two baselines adopt the same learning rate policy. 
 
 ![cifar10-lr](figures/cifar10-lr.png)
 Usage:
@@ -81,18 +93,11 @@ Usage:
 ```
 python cifarEpsilonResnet.py -n 18 -e 2.5 --gpu 1 -o cifar10-e_2.5-n_18 
 ```
-Note: svhnEpsilonResnet.py is also provided with similar usage.
+Note: The usage of training CIFAR100, SVHN are similar. Please refer to their scripts for examples.
 
 ## Testing
-### compressModel.py
-The script compressModel.py will compress a model obtained during train. 
-
-Parameters:
-
-```
- --dir:  specifies the train_log file directory
- --step:  specifies the model of which step is to be compressed.
-```
+### Compressing model
+We do testing on an standard ResNet after discarding the redundant layers. 
 
 Usage:
 
@@ -101,18 +106,26 @@ python compressModel.py --dir models/cifar10-e_2.5-n_125 --step 303420
 
 ```
 
-NOTE: the following files are required in '--dir' 
+Parameters:
 
-+ log.log is the log file of training &epsilon;-ResNet
-+ model-303420.data-00000-of-00001 and model-303420.index 
+```
+ --dir:  specifies the train_log file directory. Three files are required. They are for this example
+ 	log.log
+ 	model-303420.data-00000-of-00001
+ 	model-303420.index
+ --step:  specifies the model of which step is to be compressed.
+```
 
 It will generate compressed model files:
 
-+ The configuration of compressed model: compressed\_model\_303420.cfg.
-+ The compressed model: compressed\_model\_303420.data-00000-of-00001, compressed_model_303420.index
+```
+compressed_model_303420.cfg.
+compressed_model_303420.data-00000-of-00001
+compressed_model_303420.index
+```
 
-### Test on compressed models
-Here is an example to test on CIFAR-10 dataset. The script cifarCompressedResnet.py builds a standard ResNet based on the structure information file. It will do inference on the compressed model. The scripts on other datasets are also provided.
+### Testing compressed model
+Here is an example to test on CIFAR-10 dataset. The script cifarCompressedResnet.py builds a standard ResNet based on '*.cfg' file. 
 
 Usage:
 
@@ -120,13 +133,6 @@ Usage:
 python cifarCompressedResnet.py --cfg models/cifar10-n_125/compressed_model_303420.cfg --gpu 0 --cifar10 
 ```
 
-A few trained and compressed models on CIFAR-10 and ImageNet are listed [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
-
-### Discussion on compressing ImageNet models
-
-We use a variable is\_discarded to show the result of the promoting function S(F(x)) in each step. The standard learning rate policy is applied on ImageNet. Some blocks may have no sufficient epochs to decay to zeros.
-
-We maintain this variable with [tf.train.ExponentialMovingAverage](https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage) in our experiments to know the value history in previous steps. Its value of 1 indicates the block is discarded. Before a block decays to zeros, its moving average value may be in the range (0,1) as observed in log.log of ImageNet experiments. Finally, we only prune the blocks whose weights decay to zeros. 
 
 <!---
 Or we prune a block if the moving average value is greater than a threshold. That's is discarded\_threshold in compressModel.py.
@@ -142,37 +148,7 @@ On a ImangeNet model of &epsilon;-ResNet 101, we test different discarded\_tresh
 
 
 # Implementation
-Its implementation is built on [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet) of [tensorpack](https://github.com/ppwwyyxx/tensorpack). The idea is simple. We only add a few functions and make necessary changes on the original [ResNet](https://github.com/ppwwyyxx/tensorpack/tree/master/examples/ResNet). Highlights include:
-
-- EpsilonResnetBase.py
-
-	Implementation of sparsity promoting function with 4 ReLUs and side supervision at the intermediate of the network.
- 
-- LearningRateSetter.py
-
-	A callback class for the implementation of adaptive learning rate. When the number of discarded layers increases, the adaptive learning rate is activated.
-	
-- imagenetEpsilonResnet.py, cifarEpsilonResnet.py, svhnEpsilonResnet.py
-
-	Training on ImageNet, CIFAR-10, CIFAR-100, SVHN datasets. We make no change on data augmentation. Modifications include: 
-	
-	+ In \_build\_graph(), strict\_identity() function is applied in residual functions. 
-	+ In get_config(), a InferenceRunner() instance is added for side supervision; a LearningRateSetter() instance is added for adaptive learning rate.
-	+ The variable discarded_cnt is to count the number of discarded layers.
-
-- Notes on sparse promoting function:
-
-	+ The output of one residual block F(x) is a 4D matrix, that is batch_size x height x width x channel. Only if all of the elements in F(x) is smaller than epsilon, we will have S(F(X))=0. It requires the responses of all the images in one batch smaller than epsilon. 
-Thus, the result of S(F(X)) of a residual block is relatively stable because of considering all images in one batch.
-
-	+ As mentioned above, S(F(X)) may be dynamic for different batches. When one batch makes S(F(x)) become 0, the l2 norm in the loss function will begin to force the weights of F(x) to decrease and finally all weights become zero.
-	
-- Notes on adaptive learning rate
-	+ The adaptive learning rate is required to train epsilon-ResNet on Cifar10, cifar100, svhn datasets. The standard learning rate policy will lead to bad performance. 
-	+ ImageNet experiments apply the standard learning rate policy.
-	+ Let's take the adaptive learning rate on Cifar10 and Cifar100 as example:
-	
-		At the begining of training, we follow the standard learning rate policy. We start with a learning rate of 0.1 and decrease it by a factor of 10 at epochs 82 and 123. That is lr=0.1 at epoch 1, lr = 0.01 at epoch 82, lr = 0.001 at epoch 123. If the network starts losing layer, the standard learning rate policy will stop and the adaptive learning rate policy begin to work: every time a layer is lost, the learning rate will be set to 0.1 again. For example, if a layer is lost at epoch N, the learning rate will become 0.1 at epoch N+1, will be 0.01 at epoch N+41, and be 0.001 at epoch N+61. 
+Please refer to [implementation_notes.md](implementation_notes.md) for the notes of implementation. 
 # Citing &epsilon;-ResNet
 
 Please cite &epsilon;-ResNet in your publication if it helps your research:
