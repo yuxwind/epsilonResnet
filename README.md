@@ -54,7 +54,7 @@ If you would like to compare with our experiments in your research, please run t
 + run_imagenet.sh
 + run_svhn.sh
 
-A few trained and compressed models on CIFAR-10 and ImageNet are listed [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
+A few trained and compressed models on CIFAR-10 and ImageNet are provided [here](https://drive.google.com/drive/folders/1pJ6C3IbxmrvwjgTlnlQ13bLZXuH3j8yt?usp=sharing)
 
 ## Training
 
