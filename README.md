@@ -30,18 +30,20 @@ Dependencies is the same as [tensorpack](https://github.com/ppwwyyxx/tensorpack)
 + TensorFlow >= 1.3.0
 
 ```
-# install git, then:
-# pull tensorpack
+# Pull tensorpack
 git clone https://github.com/ppwwyyxx/tensorpack.git
 
 # This implementation is based on tags/0.2.0. I noticed that some APIs in the latest tensorpack is changed, I'll make it compatible in the future version.  
 cd tensorpack && git checkout tags/0.2.0 && cd ..
 
-# pull epsilon-ResNet
+# Pull epsilon-ResNet
 git clone https://github.com/yuxwind/epsilonResnet.git
 
-# copy the adaptive learning rate file to tensorpack 
+# Copy the adaptive learning rate file to tensorpack 
 cp epsilonResnet/scripts/LearningRateSetter.py tensorpack/tensorpack/callbacks
+
+# Run scripts
+cd epsilonResnet/scripts
 ```
 	 
 # Datasets
