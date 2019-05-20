@@ -1,0 +1,15 @@
+functools32==3.2.3.post2
+h5py==2.9.0
+matplotlib==2.2.4
+msgpack==0.6.1
+msgpack-numpy==0.4.4.3
+numpy==1.16.2
+opencv-python==4.1.0.25
+pyzmq==18.0.1
+tabulate==0.8.3
+tensorboard==1.13.1
+tensorflow-estimator==1.13.0
+tensorflow-gpu==1.13.1
+termcolor==1.1.0
+tqdm==4.32.1
+zmq==0.0.0
