@@ -23,13 +23,14 @@ Table of Contents
 
 # Installation
 
-Dependencies is the same as [tensorpack](https://github.com/ppwwyyxx/tensorpack):
+Dependency: 
 
-+ Python 2.7 or 3
-+ Python bindings for OpenCV (Optional)
-+ TensorFlow >= 1.3.0
++ Python 2.7
 
 ```
+# Dependency
+pip install -r requirements.txt
+
 # Pull tensorpack
 git clone https://github.com/ppwwyyxx/tensorpack.git
 
