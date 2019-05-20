@@ -34,7 +34,7 @@ Dependencies is the same as [tensorpack](https://github.com/ppwwyyxx/tensorpack)
 # pull tensorpack
 git clone https://github.com/ppwwyyxx/tensorpack.git
 # This implementation is based on tags/0.2.0. I noticed that some APIs in the latest tensorpack is changed, I'll make it compatible in the future version.  
-git checkout tags/0.2.0
+cd tensorpack && git checkout tags/0.2.0 && cd ..
 
 # pull epsilon-ResNet
 https://github.com/yuxwind/epsilonResnet.git
