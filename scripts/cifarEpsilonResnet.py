@@ -89,7 +89,8 @@ class Model(ModelDesc):
 
             with tf.variable_scope(name) as scope:
                 l = residual_convs(l,first,out_channel,stride1)
-                identity_w = strict_identity(l, self.EPSILON)
+                #identity_w = strict_identity(l, self.EPSILON)
+                identity_w = strict_identity(l, epsilon)
                 # apply strict identity
                 l = identity_w * l + short_cut
                 # monitor is_discarded
@@ -195,6 +196,8 @@ def get_config(out_dir):
         callbacks=[
             ModelSaver(),
             InferenceRunner(dataset_test, inferences),
+            ScheduledHyperParamSetter('epsilon',
+                [(0,0.0), [150, EPSILON]]),
             LearningRateSetter('learning_rate','discarded_cnt',
                 [(0, 0.1), (82, 0.01), (123, 0.001), (300,0.0002)],
                 [(0, 0.1), (41, 0.01), (61, 0.001), (150,0.0002)],

@@ -183,7 +183,7 @@ def get_data(train_or_test):
 
 
 def get_config():
-    logger.set_logger_dir('train_log.' + out_dir)
+    logger.set_logger_dir('train_log.' + OUTDIR)
     dataset_train = get_data('train')
     dataset_test = get_data('test')
     return TrainConfig(

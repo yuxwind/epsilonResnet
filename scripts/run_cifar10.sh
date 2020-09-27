@@ -1,6 +1,6 @@
 # Example for training and inference on compressed models
 #   run epsilon ResNet 110 with epsilon=2.5
-python cifarEpsilonResnet.py --gpu 2 -n 18 -e 2.5 -o cifar10-e_2.5-n_18 --cifar10
+python cifarEpsilonResnet.py --gpu 1 -n 18 -e 2.5 -o cifar10-e_2.5-n_18 --cifar10
 #   compress the model of step 303420
 python compressModel.py --dir train_log.cifar10-e_2.5-n_18 --step 303420
 #   do inference on the compressed model of step 303420
